@@ -19,14 +19,15 @@ header h1 {
 
 main {
   margin: 0 auto;
-  max-width: 1000px;
+  max-width: 1300px;
   min-width: 510px;
   width: 100%;
   height: auto;
+  margin-bottom: 50px;
 }
 
 footer {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   left: 0;
   min-width: 100vw;
