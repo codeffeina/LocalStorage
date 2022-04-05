@@ -1,1 +1,56 @@
-<h2>Folder View</h2>
+<div class="container">
+  <aside>
+    <h3>Folders</h3>
+    <form action="/app/create-folder" method="post">
+      <input type="text" name="folder" id="folder" placeholder="folder name" />
+      <input type="submit" value="create" />
+    </form>
+    <div class="folder-list">
+      <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+      </ul>
+    </div>
+  </aside>
+  <section>
+    <form action="/app/upload-file" method="post" enctype="multipart/form-data">
+      <input type="file" name="file[file]" id="file" />
+      <input type="submit" value="upload" />
+      <hr />
+      <div class="files-container">
+        {{#each files}}
+          <div class="file">
+            {{! For Images }}
+            {{#if isImage}}
+              <img src="{{this.pathToFile}}" alt="Not Found" class="image" />
+            {{/if}}
+            {{! End Images }}
+            {{! For Audios }}
+            {{#if isAudio}}
+              <audio controls>
+                <source
+                  src="{{this.pathToFile}}"
+                  type="{{this.type}}/{{this.format}}"
+                />
+                Your browser does not support the audio element.
+              </audio>
+            {{/if}}
+            {{! End Audio }}
+            {{! For Videos }}
+            {{#if IsVideo}}
+              <video width="100%" height="200" controls>
+                <source
+                  src="{{this.pathToFile}}"
+                  type="video/{{this.format}}"
+                />
+                Your browser does not support the video tag.
+              </video>
+            {{/if}}
+            {{! End Video }}
+          </div>
+        {{/each}}
+      </div>
+    </form>
+  </section>
+</div>
