@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const morgan = require("morgan");
 const express = require("express");
 const routes = require("./routes/app.routes");
@@ -11,6 +12,7 @@ app.set("port", process.env.PORT || 3001);
 
 // Middleware
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
