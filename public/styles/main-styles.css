@@ -23,11 +23,11 @@ main {
   min-width: 510px;
   width: 100%;
   height: auto;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
   min-width: 100vw;
