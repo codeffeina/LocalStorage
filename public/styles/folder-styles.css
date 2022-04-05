@@ -25,3 +25,11 @@ section {
   width: 80%;
   border-left: 1px solid #333;
 }
+
+img,
+video {
+  float: left;
+  margin-right: 10px;
+  width: 250px;
+  height: auto;
+}
