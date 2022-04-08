@@ -8,8 +8,9 @@ exports.folderViewController = function (req, res) {
   if (/%20/.test(req.url)) {
     let folder = req.url.replace(/%20/g, "").substring(1);
     res.redirect("/app/" + folder);
+    return;
   }
-  res.render("folder", { layout: "main", url: req.url });
+  res.render("folder", { layout: "main", url: req.url.substring(1) });
 };
 
 exports.uploadFile = async function (req, res) {
@@ -23,7 +24,7 @@ exports.uploadFile = async function (req, res) {
     fileDoc.size = file.size;
     fileDoc.type = file.type;
     fileDoc.created_at = new Date();
-    fileDoc.folder = req.body.url.substring(1);
+    fileDoc.folder = req.body.url;
     console.log(fileDoc, fileDoc.folder);
 
     res.redirect("/app/" + fileDoc.folder);
