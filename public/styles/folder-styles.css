@@ -50,9 +50,15 @@ section {
 }
 
 img,
-video {
+video,
+audio {
+  width: 100%;
+  display: block;
+}
+
+.file {
   float: left;
-  margin-right: 10px;
+  margin: 10px;
   width: 250px;
   height: auto;
 }
