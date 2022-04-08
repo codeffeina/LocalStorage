@@ -11,10 +11,8 @@ exports.folderViewController = async function (req, res) {
     res.redirect("/app/" + folder);
     return;
   }
-  if (FOLDERS.length === 0) {
-    FOLDERS = await FolderModel.find();
-    // console.log(FOLDERS);
-  }
+
+  FOLDERS = await FolderModel.find();
 
   let urlName = req.url.substring(1);
   console.log(1, urlName);
