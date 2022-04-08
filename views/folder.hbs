@@ -7,9 +7,9 @@
     </form>
     <div class="folder-list">
       <ul>
-        <li><a href="/app/Link1">Link 1</a></li>
-        <li><a href="/app/Link2">Link 2</a></li>
-        <li><a href="/app/Link3">Link 3</a></li>
+        {{#each FOLDERS}}
+          <li><a href="/app/{{this.name}}">{{this.name}}</a></li>
+        {{/each}}
       </ul>
     </div>
   </aside>
@@ -29,15 +29,19 @@
       {{#each files}}
         <div class="file">
           {{! For Images }}
-          {{#if isImage}}
-            <img src="{{this.pathToFile}}" alt="Not Found" class="image" />
+          {{#if this.isImage}}
+            <img
+              src="/images/{{this.url}}/{{this.name}}"
+              alt="Not Found"
+              class="image"
+            />
           {{/if}}
           {{! End Images }}
           {{! For Audios }}
-          {{#if isAudio}}
+          {{#if this.isAudio}}
             <audio controls>
               <source
-                src="{{this.pathToFile}}"
+                src="/images/{{this.url}}/{{this.name}}"
                 type="{{this.type}}/{{this.format}}"
               />
               Your browser does not support the audio element.
@@ -45,18 +49,16 @@
           {{/if}}
           {{! End Audio }}
           {{! For Videos }}
-          {{#if IsVideo}}
+          {{#if this.isVideo}}
             <video class="video" controls>
-              <source src="{{this.pathToFile}}" type="video/{{this.format}}" />
+              <source
+                src="/images/{{this.url}}/{{this.name}}"
+                type="video/{{this.format}}"
+              />
               Your browser does not support the video tag.
             </video>
           {{/if}}
           {{! End Video }}
-          {{#if isPDF}}
-            <a href="#">
-              <img src="/images/assets/pdf.png" alt="Not found" />
-            </a>
-          {{/if}}
         </div>
       {{/each}}
       {{! End Each Files }}
