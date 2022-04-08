@@ -20,6 +20,7 @@
     <hr />
     <form action="/app/upload-file" method="post" enctype="multipart/form-data">
       <input type="file" name="file[file]" id="file" />
+      <input style="display: none;" name="url" value="{{url}}" />
       <input type="submit" value="upload" />
     </form>
     <hr />
