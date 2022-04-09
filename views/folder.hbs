@@ -1,77 +1,111 @@
 <div class="container">
-  <aside>
-    <h3>Folders</h3>
-    <form action="/app/create-folder" method="post">
-      <input
-        type="text"
-        name="folder"
-        id="folder"
-        placeholder="folder name"
-        required
-      />
-      <input style="display: none;" name="url" value="{{url}}" />
-      <input type="submit" value="create" />
-    </form>
-    <div class="folder-list">
-      <ul>
-        {{#each FOLDERS}}
-          <li><a href="/app/{{this.name}}">{{this.name}}</a></li>
-        {{/each}}
-      </ul>
-    </div>
-  </aside>
-  <section>
-    <h2>
-      {{url}}
-    </h2>
-    <hr />
-    <form action="/app/upload-file" method="post" enctype="multipart/form-data">
-      <input type="file" name="file[file]" id="file" />
-      <input style="display: none;" name="url" value="{{url}}" />
-      <input type="submit" value="upload" />
-    </form>
-    <hr />
-    {{! Files Container }}
-    <div class="files-container">
-      {{#each files}}
-        <div class="file">
-          {{! For Images }}
-          {{#if this.isImage}}
-            <img
-              src="/images/{{this.url}}/{{this.name}}"
-              alt="Not Found"
-              class="image"
+  <div class="container">
+    <div class="row">
+      <div class="col-3 bg-secondary">
+        <aside>
+          <h3 class="text-white text-center display-5">Folders</h3>
+          <form class="m-2" action="/app/create-folder" method="post">
+            <input
+              class="form-control mb-2"
+              type="text"
+              name="folder"
+              id="folder"
+              placeholder="folder name"
+              required
             />
-          {{/if}}
-          {{! End Images }}
-          {{! For Audios }}
-          {{#if this.isAudio}}
-            <audio controls>
-              <source
-                src="/images/{{this.url}}/{{this.name}}"
-                type="{{this.type}}/{{this.format}}"
+            <input style="display: none;" name="url" value="{{url}}" />
+            <input type="submit" class="form-control bg-info" />
+          </form>
+          <nav class="nav flex-column">
+            {{#each FOLDERS}}
+              <a
+                href="/app/{{this.name}}"
+                class="nav-link text-info"
+                id="{{this.name}}"
+              >{{this.name}}</a>
+            {{/each}}
+          </nav>
+          <div class="folder-list">
+            <ul>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      <div class="col-9 bg-light">
+        <h2 class="display-2 text-capitalize text-center">
+          {{url}}
+        </h2>
+        <form
+          class="row g-3"
+          action="/app/upload-file"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="row">
+            <div class="col-12">
+              <input
+                class="form-control form-control-lg"
+                type="file"
+                name="file[file]"
+                id="formFile"
+                required
               />
-              Your browser does not support the audio element.
-            </audio>
-          {{/if}}
-          {{! End Audio }}
-          {{! For Videos }}
-          {{#if this.isVideo}}
-            <video class="video" controls>
-              <source
-                src="/images/{{this.url}}/{{this.name}}"
-                type="video/{{this.format}}"
+            </div>
+            <div class="col">
+              <input
+                type="submit"
+                class="form-control form-control-sm bg-info"
+                value="Upload"
               />
-              Your browser does not support the video tag.
-            </video>
-          {{/if}}
-          {{! End Video }}
-        </div>
-      {{/each}}
-      {{! End Each Files }}
+            </div>
+          </div>
+          <div class="mb-3">
+            {{! <label for="formFile" class="form-label">Choose a file</label> }}
+          </div>
+          <input style="display: none;" name="url" value="{{url}}" />
+        </form>
+        {{! Files Container }}
+        {{#each files}}
+          <div class="m-4 float-start">
+            {{! For Images }}
+            {{#if this.isImage}}
+              <img
+                src="/images/{{this.url}}/{{this.name}}"
+                alt="Not Found"
+                class="img-fluid"
+              />
+            {{/if}}
+            {{! End Images }}
+            {{! For Audios }}
+            {{#if this.isAudio}}
+              <audio controls>
+                <source
+                  src="/images/{{this.url}}/{{this.name}}"
+                  type="{{this.type}}/{{this.format}}"
+                />
+                Your browser does not support the audio element.
+              </audio>
+            {{/if}}
+            {{! End Audio }}
+            {{! For Videos }}
+            {{#if this.isVideo}}
+              <video class="container-md" controls>
+                <source
+                  src="/images/{{this.url}}/{{this.name}}"
+                  type="video/{{this.format}}"
+                />
+                Your browser does not support the video tag.
+              </video>
+            {{/if}}
+            {{! End Video }}
+          </div>
+        {{/each}}
+        {{! End Each Files }}
+      </div>
     </div>
+
     {{! End Files Container }}
-  </section>
-  <div class="clear" style="clear: both;"></div>
+  </div>
   {{! End  Section}}
+  <div class="clear" style="clear: both;"></div>
 </div>
