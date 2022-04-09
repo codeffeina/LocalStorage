@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const { FileModel, FolderModel } = require("../models/file.model");
-const pathToHome = path.join(__dirname, "..", "public", "images", "home");
+const pathToImages = path.join(__dirname, "..", "public", "images");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
 
 exports.folderViewController = async function (req, res) {
@@ -17,6 +17,9 @@ exports.folderViewController = async function (req, res) {
   let urlName = req.url.substring(1);
   console.log(1, urlName);
   let folder = FOLDERS.find((folder) => folder.name === urlName);
+  if (folder === undefined) {
+    return res.redirect("/app/");
+  }
   let files = await FileModel.find({ folder_id: folder._id });
   files = files.map((file) => {
     file.url = urlName;
@@ -34,15 +37,15 @@ exports.folderViewController = async function (req, res) {
 
 exports.uploadFile = async function (req, res) {
   try {
+    const fileDoc = new FileModel();
     const file = req.files.file.file;
     const { url } = req.body;
-    await fs.renameSync(file.path, path.join(pathToHome, file.name));
-    const fileDoc = new FileModel();
+    fs.renameSync(file.path, path.join(pathToImages, url, file.name));
 
     // console.log("Extracting url", url);
 
     fileDoc.name = file.name;
-    fileDoc.path = path.join(pathToHome, file.name);
+    fileDoc.path = path.join(pathToImages, url, file.name);
     fileDoc.size = file.size;
     fileDoc.type = file.type.split("/")[0];
     fileDoc.format = file.type.split("/")[1];
@@ -70,6 +73,26 @@ exports.uploadFile = async function (req, res) {
     res.redirect("/app/" + req.body.url);
   } catch (err) {
     console.log(err);
+    res.redirect("/app/");
+  }
+};
+
+exports.createFolder = async function (req, res) {
+  try {
+    let { folder, url } = req.body;
+    folder = folder.trim().replace(/ /g, "");
+    if (folder.length === 0) {
+      return res.redirect("/app/");
+    }
+    fs.mkdirSync(path.join(pathToImages, folder));
+
+    const newFolder = new FolderModel();
+    newFolder.name = folder;
+    await newFolder.save();
+
+    res.redirect("/app/" + url);
+  } catch (error) {
+    console.error(error);
     res.redirect("/app/");
   }
 };

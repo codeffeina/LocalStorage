@@ -16,5 +16,6 @@ router.get("/", (req, res) => {
 router.get("/:folder", ViewController.folderViewController);
 
 router.post("/upload-file", multipartyMiddleware, ViewController.uploadFile);
+router.post("/create-folder", ViewController.createFolder);
 
 module.exports = router;
