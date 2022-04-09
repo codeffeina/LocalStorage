@@ -2,7 +2,14 @@
   <aside>
     <h3>Folders</h3>
     <form action="/app/create-folder" method="post">
-      <input type="text" name="folder" id="folder" placeholder="folder name" />
+      <input
+        type="text"
+        name="folder"
+        id="folder"
+        placeholder="folder name"
+        required
+      />
+      <input style="display: none;" name="url" value="{{url}}" />
       <input type="submit" value="create" />
     </form>
     <div class="folder-list">
