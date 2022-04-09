@@ -15,7 +15,6 @@ exports.folderViewController = async function (req, res) {
   FOLDERS = await FolderModel.find();
 
   let urlName = req.url.substring(1);
-  console.log(1, urlName);
   let folder = FOLDERS.find((folder) => folder.name === urlName);
   if (folder === undefined) {
     return res.redirect("/app/");
@@ -25,7 +24,6 @@ exports.folderViewController = async function (req, res) {
     file.url = urlName;
     return file;
   });
-  // console.log("files", files);
 
   res.render("folder", {
     layout: "main",
@@ -41,8 +39,6 @@ exports.uploadFile = async function (req, res) {
     const file = req.files.file.file;
     const { url } = req.body;
     fs.renameSync(file.path, path.join(pathToImages, url, file.name));
-
-    // console.log("Extracting url", url);
 
     fileDoc.name = file.name;
     fileDoc.path = path.join(pathToImages, url, file.name);
@@ -62,13 +58,10 @@ exports.uploadFile = async function (req, res) {
         break;
     }
 
-    // console.log("Folders", FOLDERS);
     // finds the folder this file belongs to
     let folder = FOLDERS.find((folder) => folder.name === url);
-    // console.log("folder found ?", folder);
     fileDoc.folder_id = folder._id;
     await fileDoc.save();
-    console.log(fileDoc);
 
     res.redirect("/app/" + req.body.url);
   } catch (err) {

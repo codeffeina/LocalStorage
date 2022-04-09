@@ -1,9 +1,19 @@
 const { default: mongoose } = require("mongoose");
 const { Schema, model, connect } = require("mongoose");
 
-connect("mongodb://localhost:27017/CloudStorage").then(() => {
-  console.log("Database connected");
-});
+async function setupDB() {
+  try {
+    connect("mongodb://localhost:27017/CloudStorage");
+    let folders = await FolderModel.find({});
+    if (folders.length === 0) {
+      await FolderModel.insertMany({ name: "home" });
+    }
+    console.log("Database connection!");
+  } catch (err) {
+    console.error(err);
+    return;
+  }
+}
 
 const FileSchema = new Schema({
   name: String,
@@ -36,6 +46,8 @@ const FolderSchema = new Schema({
 
 const FileModel = model("File", FileSchema);
 const FolderModel = model("Folder", FolderSchema);
+
+setupDB();
 
 module.exports = {
   FileModel,
