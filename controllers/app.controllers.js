@@ -37,6 +37,7 @@ exports.folderViewController = async function (req, res) {
   });
   // set the showMessage to false after the view have been render
   req.app.locals.showMessage = false;
+  req.app.locals.showMessageFolder = false;
   return;
 };
 
@@ -79,7 +80,7 @@ exports.uploadFile = async function (req, res) {
     fileDoc.folder_id = folder._id;
     await fileDoc.save();
 
-    res.redirect("/app/" + req.body.url);
+    res.redirect("/app/" + url);
   } catch (err) {
     console.log(err);
     res.redirect("/app/");
@@ -93,6 +94,13 @@ exports.createFolder = async function (req, res) {
     if (folder.length === 0) {
       return res.redirect("/app/");
     }
+
+    if (fs.existsSync(path.join(pathToImages, folder))) {
+      req.app.locals.showMessageFolder = true;
+      res.redirect("/app/" + url);
+      return;
+    }
+
     fs.mkdirSync(path.join(pathToImages, folder));
 
     const newFolder = new FolderModel();

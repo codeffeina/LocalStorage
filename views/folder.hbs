@@ -13,6 +13,25 @@
               placeholder="create folder"
               required
             />
+            {{#if showMessageFolder}}
+              <div class="col-12">
+                <div
+                  class="alert alert-warning d-flex align-items-center"
+                  role="alert"
+                >
+                  <svg
+                    class="bi flex-shrink-0 me-2"
+                    width="24"
+                    height="24"
+                    role="img"
+                    aria-label="Warning:"
+                  ><use xlink:href="#exclamation-triangle-fill"></use></svg>
+                  <div>
+                    This Folder already exists
+                  </div>
+                </div>
+              </div>
+            {{/if}}
             <input style="display: none;" name="url" value="{{url}}" />
             <input type="submit" class="form-control bg-info" value="create" />
           </form>
