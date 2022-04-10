@@ -3,6 +3,7 @@ const fs = require("fs");
 const { FileModel, FolderModel } = require("../models/file.model");
 const pathToImages = path.join(__dirname, "..", "public", "images");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
+const AllowTypes = ["audio", "image", "video"];
 
 exports.folderViewController = async function (req, res) {
   // if the url contains any space, it will be removed and redirect
@@ -12,8 +13,10 @@ exports.folderViewController = async function (req, res) {
     return;
   }
 
+  // find all folders in the db
   FOLDERS = await FolderModel.find();
 
+  // extract the folder name from the url
   let urlName = req.url.substring(1);
   let folder = FOLDERS.find((folder) => folder.name === urlName);
   if (folder === undefined) {
@@ -30,7 +33,11 @@ exports.folderViewController = async function (req, res) {
     url: urlName,
     FOLDERS,
     files,
+    showMessage: req.app.locals.showMessage,
   });
+  // set the showMessage to false after the view have been render
+  req.app.locals.showMessage = false;
+  return;
 };
 
 exports.uploadFile = async function (req, res) {
@@ -38,6 +45,15 @@ exports.uploadFile = async function (req, res) {
     const fileDoc = new FileModel();
     const file = req.files.file.file;
     const { url } = req.body;
+
+    // check if the type of the file is allowed
+    if (!AllowTypes.includes(file.type.split("/")[0])) {
+      fs.rmSync(file.path);
+      req.app.locals.showMessage = true;
+      res.redirect("/app/" + req.body.url);
+      return;
+    }
+    req.app.locals.showMessage = false;
     fs.renameSync(file.path, path.join(pathToImages, url, file.name));
 
     fileDoc.name = file.name;

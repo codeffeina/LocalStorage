@@ -51,7 +51,26 @@
                 required
               />
             </div>
-            <div class="col">
+            {{#if showMessage}}
+              <div class="col-12">
+                <div
+                  class="alert alert-warning d-flex align-items-center"
+                  role="alert"
+                >
+                  <svg
+                    class="bi flex-shrink-0 me-2"
+                    width="24"
+                    height="24"
+                    role="img"
+                    aria-label="Warning:"
+                  ><use xlink:href="#exclamation-triangle-fill"></use></svg>
+                  <div>
+                    Only Video, Images and Audio files allow
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+            <div class="col-12">
               <input
                 type="submit"
                 class="form-control form-control-sm bg-info"
