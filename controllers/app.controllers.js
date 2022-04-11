@@ -113,3 +113,20 @@ exports.createFolder = async function (req, res) {
     res.redirect("/app/");
   }
 };
+
+exports.deleteFile = async function (req, res) {
+  try {
+    const { id } = req.query;
+    let file = await FileModel.findById(id);
+    fs.rmSync(file.path);
+    await FileModel.findByIdAndDelete(id);
+    return res.json({
+      OK: true,
+      status: 200,
+      msg: "File remove successfully!",
+    });
+  } catch (error) {
+    console.error(error);
+    res.json({ OK: false, status: 500, msg: "We couldn't remove the file" });
+  }
+};

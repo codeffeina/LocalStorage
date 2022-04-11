@@ -104,13 +104,13 @@
         </form>
         {{! Files Container }}
         {{#each files}}
-          <div class="m-4 float-start">
+          <div class="m-3 float-start col-3">
             {{! For Images }}
             {{#if this.isImage}}
               <img
                 src="/images/{{this.url}}/{{this.name}}"
                 alt="Not Found"
-                class="img-fluid"
+                class="img-thumbnail rounded"
               />
             {{/if}}
             {{! End Images }}
@@ -136,6 +136,11 @@
               </video>
             {{/if}}
             {{! End Video }}
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              onclick="deleteFile('{{this._id}}')"
+            >Delete</button>
           </div>
         {{/each}}
         {{! End Each Files }}
