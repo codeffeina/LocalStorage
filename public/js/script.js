@@ -9,3 +9,8 @@ function deleteFile(id) {
     window.location.reload();
   });
 }
+
+function showSpinner() {
+  document.getElementById("loading-folder").style.display = "block";
+  document.getElementById("folder-input").style.display = "none";
+}

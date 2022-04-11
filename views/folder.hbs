@@ -9,11 +9,19 @@
               class="form-control mb-2"
               type="text"
               name="folder"
-              id="folder"
               placeholder="create folder"
               required
             />
-            {{#if showMessageFolder}}
+            <div
+              class="text-center text-primary"
+              style="display: none;"
+              id="loading-folder"
+            >
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            {{#if showMessageFolder.state}}
               <div class="col-12">
                 <div
                   class="alert alert-warning d-flex align-items-center"
@@ -27,13 +35,24 @@
                     aria-label="Warning:"
                   ><use xlink:href="#exclamation-triangle-fill"></use></svg>
                   <div>
-                    This Folder already exists
+                    folder already exists,
+                    <a
+                      href="/app/{{showMessageFolder.folder}}"
+                      class="alert-link"
+                    >click here to open
+                    </a>
                   </div>
                 </div>
               </div>
             {{/if}}
             <input style="display: none;" name="url" value="{{url}}" />
-            <input type="submit" class="form-control bg-info" value="create" />
+            <input
+              type="submit"
+              class="form-control bg-info"
+              value="create"
+              id="folder-input"
+              onclick="showSpinner()"
+            />
           </form>
           <nav class="nav flex-column">
             {{#each FOLDERS}}

@@ -96,7 +96,7 @@ exports.createFolder = async function (req, res) {
     }
 
     if (fs.existsSync(path.join(pathToImages, folder))) {
-      req.app.locals.showMessageFolder = true;
+      req.app.locals.showMessageFolder = { state: true, folder };
       res.redirect("/app/" + url);
       return;
     }
@@ -117,9 +117,20 @@ exports.createFolder = async function (req, res) {
 exports.deleteFile = async function (req, res) {
   try {
     const { id } = req.query;
+    if (id === undefined || !FileModel.exists({ _id: id })) {
+      return res.json({
+        OK: false,
+        status: 404,
+        msg: "The file doesn't exists",
+      });
+    }
+    // finds the file in the database
     let file = await FileModel.findById(id);
+    // remove the file from the folder
     fs.rmSync(file.path);
+    // remove the file from the database
     await FileModel.findByIdAndDelete(id);
+
     return res.json({
       OK: true,
       status: 200,
