@@ -13,7 +13,7 @@
               placeholder="create folder"
               required
             />
-            {{#if showMessageFolder}}
+            {{#if showMessageFolder.state}}
               <div class="col-12">
                 <div
                   class="alert alert-warning d-flex align-items-center"
@@ -27,7 +27,12 @@
                     aria-label="Warning:"
                   ><use xlink:href="#exclamation-triangle-fill"></use></svg>
                   <div>
-                    This Folder already exists
+                    folder already exists,
+                    <a
+                      href="/app/{{showMessageFolder.folder}}"
+                      class="alert-link"
+                    >click here to open
+                    </a>
                   </div>
                 </div>
               </div>
