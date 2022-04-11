@@ -9,10 +9,18 @@
               class="form-control mb-2"
               type="text"
               name="folder"
-              id="folder"
               placeholder="create folder"
               required
             />
+            <div
+              class="text-center text-primary"
+              style="display: none;"
+              id="loading-folder"
+            >
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
             {{#if showMessageFolder.state}}
               <div class="col-12">
                 <div
@@ -38,7 +46,13 @@
               </div>
             {{/if}}
             <input style="display: none;" name="url" value="{{url}}" />
-            <input type="submit" class="form-control bg-info" value="create" />
+            <input
+              type="submit"
+              class="form-control bg-info"
+              value="create"
+              id="folder-input"
+              onclick="showSpinner()"
+            />
           </form>
           <nav class="nav flex-column">
             {{#each FOLDERS}}
