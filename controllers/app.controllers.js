@@ -1,8 +1,10 @@
 const path = require("path");
 const fs = require("fs");
-const { FileModel, FolderModel } = require("../models/");
 const Utils = require("../utils");
-const { createFile } = require("../repositories");
+const { FileModel, FolderModel } = require("../models/");
+// const { createFile, getFolders } = require("../repositories");
+const FileRepo = require("../repositories/file.repository");
+const FolderRepo = require("../repositories/folder.repository");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
 
 exports.folderViewController = async function (req, res) {
@@ -14,8 +16,7 @@ exports.folderViewController = async function (req, res) {
   }
 
   // find all folders in the db
-  FOLDERS = await FolderModel.find().select("name").lean();
-  // console.log(FOLDERS);
+  FOLDERS = await FolderRepo.getFolders({}, "name");
 
   // extract the folder name from the url
   let urlName = req.url.substring(1);
@@ -57,7 +58,7 @@ exports.uploadFile = async function (req, res) {
     }
     req.app.locals.showMessage = false;
 
-    await createFile(data, url, FOLDERS);
+    await FileRepo.createFile(data, url, FOLDERS);
 
     res.redirect("/app/" + url);
   } catch (err) {
