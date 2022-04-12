@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("./db/connection");
 const path = require("path");
 const fs = require("fs");
 const morgan = require("morgan");

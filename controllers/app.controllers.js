@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const { FileModel, FolderModel } = require("../models/file.model");
+const { FileModel, FolderModel } = require("../models/");
 const pathToImages = path.join(__dirname, "..", "public", "images");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
 const AllowTypes = ["audio", "image", "video"];
@@ -14,7 +14,7 @@ exports.folderViewController = async function (req, res) {
   }
 
   // find all folders in the db
-  FOLDERS = await FolderModel.find();
+  FOLDERS = await FolderModel.find().select("name").lean();
 
   // extract the folder name from the url
   let urlName = req.url.substring(1);
