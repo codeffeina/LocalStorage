@@ -7,32 +7,35 @@ const FileRepo = require("../repositories/file.repository");
 const FolderRepo = require("../repositories/folder.repository");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
 
-exports.folderViewController = async function (req, res) {
-  // if the url contains any space, it will be removed and redirect
-  if (/%20/.test(req.url)) {
-    let folder = req.url.replace(/%20/g, "").substring(1);
-    res.redirect("/app/" + folder);
-    return;
+function checkUrl(res, url) {
+  let checkedUrl = url;
+  if (/%20/.test(url)) {
+    checkedUrl = req.url.replace(/%20/g, "").substring(1);
   }
+  // extract the folder name from the url
+  let folder = FOLDERS.find((folder) => folder.name === checkedUrl);
+  if (folder === undefined) {
+    return res.redirect("/app/home");
+  }
+}
 
+exports.folderViewController = async function (req, res) {
   // find all folders in the db
   FOLDERS = await FolderRepo.getFolders({}, "name");
-
-  // extract the folder name from the url
-  let urlName = req.url.substring(1);
-  let folder = FOLDERS.find((folder) => folder.name === urlName);
-  if (folder === undefined) {
-    return res.redirect("/app/");
-  }
-  let files = await FileModel.find({ folder_id: folder._id });
+  // if the url contains any space, it will be removed and redirect
+  let url = req.url.substring(1);
+  // if the url is invalid, the user is redirected
+  checkUrl(res, url);
+  let folder = FOLDERS.find((folder) => folder.name === url);
+  let files = await FileRepo.getFile({ folder_id: folder._id });
   files = files.map((file) => {
-    file.url = urlName;
+    file.url = url;
     return file;
   });
 
   res.render("folder", {
     layout: "main",
-    url: urlName,
+    url,
     FOLDERS,
     files,
     showMessage: req.app.locals.showMessage,
