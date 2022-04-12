@@ -7,8 +7,10 @@ const routes = require("./routes/app.routes");
 const app = express();
 
 // Settings
-fs.mkdirSync(path.join(__dirname, "public", "images"));
-fs.mkdirSync(path.join(__dirname, "public", "images", "home"));
+if (!fs.existsSync(path.join(__dirname, "public", "images"))) {
+  fs.mkdirSync(path.join(__dirname, "public", "images"));
+  fs.mkdirSync(path.join(__dirname, "public", "images", "home"));
+}
 app.set("view engine", "hbs");
 app.set("port", process.env.PORT || 3001);
 
