@@ -23,8 +23,9 @@ module.exports = {
         break;
     }
   },
-  setFolder: function (FOLDERS, file) {
+  setFolder: function (FOLDERS, file, url) {
     let folder = FOLDERS.find((folder) => folder.name === url);
+    console.log(folder);
     file.folder_id = folder._id;
   },
 };
