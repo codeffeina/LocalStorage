@@ -1,6 +1,7 @@
 const { FileModel } = require("../models");
 const utils = require("../utils");
 const path = require("path");
+
 exports.createFile = async function (data, url, FOLDERS) {
   utils.renameTo(data.path, path.join(utils.pathToImages, url, data.name));
   try {
@@ -16,5 +17,15 @@ exports.createFile = async function (data, url, FOLDERS) {
   } catch (error) {
     console.error(error);
     res.redirect("/");
+  }
+};
+
+exports.getFiles = async function (query) {
+  try {
+    let file = await FileModel.find(query);
+    return file;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
   }
 };

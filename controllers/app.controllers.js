@@ -27,7 +27,7 @@ exports.folderViewController = async function (req, res) {
   // if the url is invalid, the user is redirected
   checkUrl(res, url);
   let folder = FOLDERS.find((folder) => folder.name === url);
-  let files = await FileRepo.getFile({ folder_id: folder._id });
+  let files = await FileRepo.getFiles({ folder_id: folder._id });
   files = files.map((file) => {
     file.url = url;
     return file;
