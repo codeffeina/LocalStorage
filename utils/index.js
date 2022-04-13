@@ -35,4 +35,19 @@ module.exports = {
       fs.mkdirSync(path.join(pathToImages, "home"));
     }
   },
+  readDirContent: function (path) {
+    try {
+      let content = fs.readdirSync(path);
+      return content;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  removeDir: function (...pathToDir) {
+    try {
+      fs.rmdirSync(path.join(...pathToDir));
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
