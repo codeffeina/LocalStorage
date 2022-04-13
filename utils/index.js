@@ -28,4 +28,10 @@ module.exports = {
     console.log(folder);
     file.folder_id = folder._id;
   },
+  setupFolders: function () {
+    if (!fs.existsSync(path.join(__dirname, "public", "images"))) {
+      fs.mkdirSync(path.join(__dirname, "public", "images"));
+      fs.mkdirSync(path.join(__dirname, "public", "images", "home"));
+    }
+  },
 };

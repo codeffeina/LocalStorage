@@ -5,13 +5,12 @@ const fs = require("fs");
 const morgan = require("morgan");
 const express = require("express");
 const routes = require("./routes/app.routes");
+const { setupFolders } = require("./utils");
 const app = express();
 
 // Settings
-if (!fs.existsSync(path.join(__dirname, "public", "images"))) {
-  fs.mkdirSync(path.join(__dirname, "public", "images"));
-  fs.mkdirSync(path.join(__dirname, "public", "images", "home"));
-}
+// check if images and home folders exists, if not, it creates them
+setupFolders();
 app.set("view engine", "hbs");
 app.set("port", process.env.PORT || 3001);
 
