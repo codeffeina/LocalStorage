@@ -1,4 +1,4 @@
-const { FolderModel, FileModel } = require("../models");
+const { FolderModel } = require("../models");
 
 exports.getFolders = async function (query, select = "") {
   try {
@@ -21,7 +21,16 @@ exports.createFolder = async function (data) {
 
 exports.findByIdAndDelete = async function (id) {
   try {
-    await FileModel.findByIdAndDelete(id);
+    await FolderModel.findByIdAndDelete(id);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.exists = async function (query) {
+  try {
+    let result = await FolderModel.exists(query);
+    return result ? true : false;
   } catch (error) {
     throw new Error(error);
   }
