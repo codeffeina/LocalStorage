@@ -6,7 +6,7 @@ const FolderSchema = new Schema({
   path: String,
   files: {
     type: [mongoose.Types.ObjectId],
-    default: [],
+    default: undefined,
   },
 });
 
