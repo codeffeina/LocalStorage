@@ -82,7 +82,10 @@ exports.createFolder = async function (req, res) {
   }
   try {
     fs.mkdirSync(path.join(Utils.pathToImages, folder));
-    await FolderRepo.createFolder(folder);
+    await FolderRepo.createFolder({
+      name: folder,
+      path: path.join(Utils.pathToImages, folder),
+    });
     res.redirect("/app/" + url);
   } catch (error) {
     fs.rmdirSync(path.join(Utils.pathToImages, folder));
