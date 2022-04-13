@@ -29,3 +29,29 @@ exports.getFiles = async function (query) {
     throw new Error(error);
   }
 };
+
+exports.existsFile = async function (query) {
+  try {
+    let exists = await FileModel.exists(query);
+    return exists ? true : false;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.findById = async function (id) {
+  try {
+    let file = await FileModel.findById(id);
+    return file;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.findByIdAndDelete = async function (id) {
+  try {
+    await FileModel.findByIdAndDelete(id);
+  } catch (error) {
+    throw new Error(error);
+  }
+};

@@ -1,8 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const Utils = require("../utils");
-const { FileModel, FolderModel } = require("../models/");
-// const { createFile, getFolders } = require("../repositories");
 const FileRepo = require("../repositories/file.repository");
 const FolderRepo = require("../repositories/folder.repository");
 let FOLDERS = []; // this var will hold the names and IDs of the folders created to avoid ask the db each time
@@ -71,27 +69,23 @@ exports.uploadFile = async function (req, res) {
 };
 
 exports.createFolder = async function (req, res) {
+  let { folder, url } = req.body;
+  folder = folder.trim().replace(/ /g, "");
+  if (folder.length === 0) {
+    return res.redirect("/app/");
+  }
+
+  if (Utils.exists(path.join(Utils.pathToImages, folder))) {
+    req.app.locals.showMessageFolder = { state: true, folder };
+    res.redirect("/app/" + url);
+    return;
+  }
   try {
-    let { folder, url } = req.body;
-    folder = folder.trim().replace(/ /g, "");
-    if (folder.length === 0) {
-      return res.redirect("/app/");
-    }
-
-    if (Utils.exists(path.join(Utils.pathToImages, folder))) {
-      req.app.locals.showMessageFolder = { state: true, folder };
-      res.redirect("/app/" + url);
-      return;
-    }
-
     fs.mkdirSync(path.join(Utils.pathToImages, folder));
-
-    const newFolder = new FolderModel();
-    newFolder.name = folder;
-    await newFolder.save();
-
+    await FolderRepo.createFolder(folder);
     res.redirect("/app/" + url);
   } catch (error) {
+    fs.rmdirSync(path.join(Utils.pathToImages, folder));
     console.error(error);
     res.redirect("/app/");
   }
@@ -100,7 +94,7 @@ exports.createFolder = async function (req, res) {
 exports.deleteFile = async function (req, res) {
   try {
     const { id } = req.query;
-    if (id === undefined || !FileModel.exists({ _id: id })) {
+    if (id === undefined || !(await FileRepo.existsFile({ _id: id }))) {
       return res.json({
         OK: false,
         status: 404,
@@ -108,11 +102,11 @@ exports.deleteFile = async function (req, res) {
       });
     }
     // finds the file in the database
-    let file = await FileModel.findById(id);
+    let file = await FileRepo.findById(id);
     // remove the file from the folder
     fs.rmSync(file.path);
     // remove the file from the database
-    await FileModel.findByIdAndDelete(id);
+    await FileRepo.findByIdAndDelete(id);
 
     return res.json({
       OK: true,
