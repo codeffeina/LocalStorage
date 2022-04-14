@@ -5,7 +5,7 @@
   "main": "app.js",
   "repository": {
     "url": "https://github.com/codeffeina/LocalStorage",
-    "type": "public"
+    "type": "git"
   },
   "scripts": {
     "start": "node app.js",
