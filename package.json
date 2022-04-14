@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "repository": {
-    "url": "https://github.com/codeffeina/CloudStorage",
+    "url": "https://github.com/codeffeina/LocalStorage",
     "type": "public"
   },
   "scripts": {
