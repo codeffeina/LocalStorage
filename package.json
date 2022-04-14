@@ -3,12 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "repository": {
+    "url": "https://github.com/codeffeina/CloudStorage",
+    "type": "public"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "express",
+    "node",
+    "mongoose",
+    "hbs"
+  ],
+  "author": {
+    "name": "Fernando Orozco",
+    "email": "forozcomercado@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {
     "connect-multiparty": "^2.2.0",
