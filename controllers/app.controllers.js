@@ -124,3 +124,24 @@ exports.deleteFile = async function (req, res) {
     res.json({ OK: false, status: 500, msg: "We couldn't remove the file" });
   }
 };
+
+exports.deleteFolder = async function (req, res) {
+  try {
+    let dirname = req.query.folder;
+    // console.log(dirname);
+    let dir = await FolderRepo.getOneFolder({ name: dirname });
+    // console.log(dir);
+    let files = Utils.readDirContent(
+      Utils.joinPaths(Utils.pathToImages, dirname)
+    );
+    for (let file of files) {
+      fs.rmSync(Utils.joinPaths(Utils.pathToImages, dirname, file));
+    }
+    Utils.removeDir(Utils.joinPaths(Utils.pathToImages, dirname));
+    await FileRepo.deleteMany({ folder_id: dir._id });
+    await FolderRepo.findByIdAndDelete(dir._id);
+    res.json({ ok: true });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
