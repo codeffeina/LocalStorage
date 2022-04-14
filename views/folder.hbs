@@ -56,11 +56,18 @@
           </form>
           <nav class="nav flex-column">
             {{#each FOLDERS}}
-              <a
-                href="/app/{{this.name}}"
-                class="nav-link text-info"
-                id="{{this.name}}"
-              >{{this.name}}</a>
+              <div class="container">
+                <a
+                  href="/app/{{this.name}}"
+                  class="nav-link text-info float-start"
+                  id="{{this.name}}"
+                >{{this.name}}</a>
+                <button
+                  type="button"
+                  class="btn btn-danger float-end"
+                  onclick="deleteFolder({{this.name}})"
+                >delete</button>
+              </div>
             {{/each}}
           </nav>
           <div class="folder-list">
