@@ -19,5 +19,6 @@ router.post("/upload-file", multipartyMiddleware, ViewController.uploadFile);
 router.post("/create-folder", ViewController.createFolder);
 
 router.delete("/file", ViewController.deleteFile);
+router.delete("/deleteFolder", ViewController.deleteFolder);
 
 module.exports = router;
