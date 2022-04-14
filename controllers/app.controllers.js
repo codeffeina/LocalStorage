@@ -1,4 +1,3 @@
-const path = require("path");
 const fs = require("fs");
 const Utils = require("../utils");
 const FileRepo = require("../repositories/file.repository");
@@ -18,30 +17,34 @@ function checkUrl(res, url) {
 }
 
 exports.folderViewController = async function (req, res) {
-  // find all folders in the db
-  FOLDERS = await FolderRepo.getFolders({}, "name");
-  // if the url contains any space, it will be removed and redirect
-  let url = req.url.substring(1);
-  // if the url is invalid, the user is redirected
-  checkUrl(res, url);
-  let folder = FOLDERS.find((folder) => folder.name === url);
-  let files = await FileRepo.getFiles({ folder_id: folder._id });
-  files = files.map((file) => {
-    file.url = url;
-    return file;
-  });
+  try {
+    // find all folders in the db
+    FOLDERS = await FolderRepo.getFolders({}, "name");
+    // if the url contains any space, it will be removed and redirect
+    let url = req.url.substring(1);
+    // if the url is invalid, the user is redirected
+    checkUrl(res, url);
+    let folder = FOLDERS.find((folder) => folder.name === url);
+    let files = await FileRepo.getFiles({ folder_id: folder._id });
+    files = files.map((file) => {
+      file.url = url;
+      return file;
+    });
 
-  res.render("folder", {
-    layout: "main",
-    url,
-    FOLDERS,
-    files,
-    showMessage: req.app.locals.showMessage,
-  });
-  // set the showMessage to false after the view have been render
-  req.app.locals.showMessage = false;
-  req.app.locals.showMessageFolder = false;
-  return;
+    res.render("folder", {
+      layout: "main",
+      url,
+      FOLDERS,
+      files,
+      showMessage: req.app.locals.showMessage,
+    });
+    // set the showMessage to false after the view have been render
+    req.app.locals.showMessage = false;
+    req.app.locals.showMessageFolder = false;
+    return;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 exports.uploadFile = async function (req, res) {
@@ -75,20 +78,20 @@ exports.createFolder = async function (req, res) {
     return res.redirect("/app/");
   }
 
-  if (Utils.exists(path.join(Utils.pathToImages, folder))) {
+  if (Utils.exists(Utils.joinPaths(Utils.pathToImages, folder))) {
     req.app.locals.showMessageFolder = { state: true, folder };
     res.redirect("/app/" + url);
     return;
   }
   try {
-    fs.mkdirSync(path.join(Utils.pathToImages, folder));
+    fs.mkdirSync(Utils.joinPaths(Utils.pathToImages, folder));
     await FolderRepo.createFolder({
       name: folder,
-      path: path.join(Utils.pathToImages, folder),
+      path: Utils.joinPaths(Utils.pathToImages, folder),
     });
     res.redirect("/app/" + url);
   } catch (error) {
-    fs.rmdirSync(path.join(Utils.pathToImages, folder));
+    fs.rmdirSync(Utils.joinPaths(Utils.pathToImages, folder));
     console.error(error);
     res.redirect("/app/");
   }

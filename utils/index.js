@@ -1,8 +1,9 @@
 const path = require("path");
 const fs = require("fs");
+const pathToImages = path.join(__dirname, "..", "public", "images");
 
 module.exports = {
-  pathToImages: path.join(__dirname, "..", "public", "images"),
+  pathToImages,
   allowTypes: ["audio", "image", "video"],
   renameTo: function (oldPath, newPath) {
     fs.renameSync(oldPath, newPath);
@@ -29,7 +30,7 @@ module.exports = {
     file.folder_id = folder._id;
   },
   setupFolders: function () {
-    let pathToImages = path.join(__dirname, "..", "public", "images");
+    // let pathToImages = path.join(__dirname, "..", "public", "images");
     if (!fs.existsSync(pathToImages)) {
       fs.mkdirSync(pathToImages);
       fs.mkdirSync(path.join(pathToImages, "home"));
@@ -49,5 +50,8 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+  joinPaths: function (...paths) {
+    return path.join(...paths);
   },
 };
