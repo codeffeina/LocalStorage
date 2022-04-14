@@ -55,3 +55,11 @@ exports.findByIdAndDelete = async function (id) {
     throw new Error(error);
   }
 };
+
+exports.deleteMany = async function (query) {
+  try {
+    await FileModel.deleteMany(query);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
