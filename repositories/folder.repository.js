@@ -10,6 +10,15 @@ exports.getFolders = async function (query, select = "") {
   }
 };
 
+exports.getOneFolder = async function (query) {
+  try {
+    let folder = await FolderModel.findOne(query);
+    return folder;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 exports.createFolder = async function (data) {
   try {
     let folder = new FolderModel(data);
@@ -31,6 +40,14 @@ exports.exists = async function (query) {
   try {
     let result = await FolderModel.exists(query);
     return result ? true : false;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.deleteOne = async function (query) {
+  try {
+    await FolderModel.findOneAndDelete(query);
   } catch (error) {
     throw new Error(error);
   }
