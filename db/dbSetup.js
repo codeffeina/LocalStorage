@@ -11,8 +11,8 @@ async function createCollections() {
         name: "home",
         path: path.join(Utils.pathToImages, "home"),
         files: [],
+        canBeDeleted: false,
       });
-      let homeDir = await FolderRepo.getFolders({ name: "home" }, "name path");
     }
   } catch (error) {
     throw new Error(error);
