@@ -62,11 +62,13 @@
                   class="nav-link text-info float-start"
                   id="{{this.name}}"
                 >{{this.name}}</a>
-                <button
-                  type="button"
-                  class="btn btn-danger float-end"
-                  onclick="deleteFolder('{{this.name}}')"
-                >delete</button>
+                {{#if this.canBeDeleted}}
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    onclick="deleteFolder('{{this.name}}')"
+                  >delete</button>
+                {{/if}}
               </div>
             {{/each}}
           </nav>
