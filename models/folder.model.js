@@ -8,6 +8,10 @@ const FolderSchema = new Schema({
     type: [mongoose.Types.ObjectId],
     default: undefined,
   },
+  canBeDeleted: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = model("Folder", FolderSchema);
