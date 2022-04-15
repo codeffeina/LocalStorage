@@ -19,7 +19,7 @@ function checkUrl(res, url) {
 exports.folderViewController = async function (req, res) {
   try {
     // find all folders in the db
-    FOLDERS = await FolderRepo.getFolders({}, "name");
+    FOLDERS = await FolderRepo.getFolders({}, "name canBeDeleted");
     // if the url contains any space, it will be removed and redirect
     let url = req.url.substring(1);
     // if the url is invalid, the user is redirected
@@ -130,6 +130,10 @@ exports.deleteFolder = async function (req, res) {
     let dirname = req.query.folder;
     // console.log(dirname);
     let dir = await FolderRepo.getOneFolder({ name: dirname });
+    // checks if the file can be deleted
+    if (!dir.canBeDeleted) {
+      return res.json({ ok: false });
+    }
     // console.log(dir);
     let files = Utils.readDirContent(
       Utils.joinPaths(Utils.pathToImages, dirname)
