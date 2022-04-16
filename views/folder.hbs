@@ -131,47 +131,53 @@
           <input style="display: none;" name="url" value="{{url}}" />
         </form>
         {{! Files Container }}
-        {{#each files}}
-          <div class="m-3 float-start col-3">
-            {{! For Images }}
-            {{#if this.isImage}}
-              <img
-                src="/images/{{this.url}}/{{this.name}}"
-                alt="Not Found"
-                class="img-thumbnail rounded"
-              />
-            {{/if}}
-            {{! End Images }}
-            {{! For Audios }}
-            {{#if this.isAudio}}
-              <p>{{this.name}}</p>
-              <audio controls>
-                <source
-                  src="/images/{{this.url}}/{{this.name}}"
-                  type="{{this.type}}/{{this.format}}"
-                />
-                Your browser does not support the audio element.
-              </audio>
-            {{/if}}
-            {{! End Audio }}
-            {{! For Videos }}
-            {{#if this.isVideo}}
-              <video class="container-md" controls>
-                <source
-                  src="/images/{{this.url}}/{{this.name}}"
-                  type="video/{{this.format}}"
-                />
-                Your browser does not support the video tag.
-              </video>
-            {{/if}}
-            {{! End Video }}
-            <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              onclick="deleteFile('{{this._id}}')"
-            >Delete</button>
-          </div>
-        {{/each}}
+        <div class="d-flex p-2 flex-wrap">
+          {{#each files}}
+            <div class="d-flex justify-content-sm-around flex-grow-1">
+              <div class="container">
+                {{! For Images }}
+                {{#if this.isImage}}
+                  <img
+                    src="/images/{{this.url}}/{{this.name}}"
+                    alt="Not Found"
+                    class="img-thumbnail rounded"
+                  />
+                {{/if}}
+                {{! End Images }}
+                {{! For Audios }}
+                {{#if this.isAudio}}
+                  <p>{{this.name}}</p>
+                  <audio controls style="width: 100%;">
+                    <source
+                      src="/images/{{this.url}}/{{this.name}}"
+                      type="{{this.type}}/{{this.format}}"
+                    />
+                    Your browser does not support the audio element.
+                  </audio>
+                {{/if}}
+                {{! End Audio }}
+                {{! For Videos }}
+                {{#if this.isVideo}}
+                  <video class="modal-dialog modal-sm" controls>
+                    <source
+                      src="/images/{{this.url}}/{{this.name}}"
+                      type="video/{{this.format}}"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                {{/if}}
+                {{! End Video }}
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  onclick="deleteFile('{{this._id}}')"
+                >Delete</button>
+              </div>
+
+            </div>
+          {{/each}}
+        </div>
+
         {{! End Each Files }}
       </div>
     </div>
