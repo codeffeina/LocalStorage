@@ -1,7 +1,6 @@
 require("dotenv").config();
 require("./db/connection");
 const path = require("path");
-const fs = require("fs");
 const morgan = require("morgan");
 const express = require("express");
 const routes = require("./routes/app.routes");
