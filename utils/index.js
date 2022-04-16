@@ -29,7 +29,6 @@ module.exports = {
     file.folder_id = folder._id;
   },
   setupFolders: function () {
-    // let pathToImages = path.join(__dirname, "..", "public", "images");
     if (!fs.existsSync(pathToImages)) {
       fs.mkdirSync(pathToImages);
       fs.mkdirSync(path.join(pathToImages, "home"));

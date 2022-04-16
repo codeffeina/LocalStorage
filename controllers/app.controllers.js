@@ -18,7 +18,7 @@ function checkUrl(res, url) {
 
 exports.folderViewController = async function (req, res) {
   try {
-    // find all folders in the db
+    // find all folders in the db and select only theirs name and canBeDelete properties
     FOLDERS = await FolderRepo.getFolders({}, "name canBeDeleted");
     // if the url contains any space, it will be removed and redirect
     let url = req.url.substring(1);
@@ -38,7 +38,8 @@ exports.folderViewController = async function (req, res) {
       files,
       showMessage: req.app.locals.showMessage,
     });
-    // set the showMessage to false after the view have been render
+    // set the showMessage to false after the view have been render, so the message will be remove
+    // after reloading the page
     req.app.locals.showMessage = false;
     req.app.locals.showMessageFolder = false;
     return;
@@ -57,8 +58,7 @@ exports.uploadFile = async function (req, res) {
     if (!Utils.allowTypes.includes(data.type.split("/")[0])) {
       fs.rmSync(data.path);
       req.app.locals.showMessage = true;
-      res.redirect("/app/" + req.body.url);
-      return;
+      return res.redirect("/app/" + req.body.url);
     }
     req.app.locals.showMessage = false;
 
@@ -128,13 +128,11 @@ exports.deleteFile = async function (req, res) {
 exports.deleteFolder = async function (req, res) {
   try {
     let dirname = req.query.folder;
-    // console.log(dirname);
     let dir = await FolderRepo.getOneFolder({ name: dirname });
     // checks if the file can be deleted
     if (!dir.canBeDeleted) {
       return res.json({ ok: false });
     }
-    // console.log(dir);
     let files = Utils.readDirContent(
       Utils.joinPaths(Utils.pathToImages, dirname)
     );
